@@ -27,6 +27,7 @@ import { siteConfig } from "@/site.config";
 const navigation = {
   home: "/",
   posts: "/posts",
+  pages: "/pages",
 };
 
 export function MobileNav() {

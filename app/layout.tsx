@@ -136,12 +136,18 @@ const Footer = () => {
               </Link>
             ))}
           </div>          <div className="flex flex-col gap-2 text-sm">
-            <h5 className="font-medium text-base">Blog</h5>
+            <h5 className="font-medium text-base">Content</h5>
             <Link
               className="hover:underline underline-offset-4"
               href="/posts"
             >
               Posts
+            </Link>
+            <Link
+              className="hover:underline underline-offset-4"
+              href="/pages"
+            >
+              Pages
             </Link>
           </div>
         </Container>
