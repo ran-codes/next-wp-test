@@ -114,10 +114,6 @@ export interface Category extends Taxonomy {
   parent: number;
 }
 
-export interface Tag extends Taxonomy {
-  taxonomy: "post_tag";
-}
-
 export interface Author {
   id: number;
   name: string;

@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getAllPosts } from "@/lib/wordpress";
+import { getAllPosts, getAllPages, getAllCategories } from "@/lib/wordpress";
 import { siteConfig } from "@/site.config";
 
 // Add static export configuration
@@ -7,7 +7,8 @@ export const dynamic = "force-static";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts();
-  const staticUrls: MetadataRoute.Sitemap = [
+  const pages = await getAllPages();
+  const categories = await getAllCategories();const staticUrls: MetadataRoute.Sitemap = [
     {
       url: `${siteConfig.site_domain}`,
       lastModified: new Date(),
@@ -25,6 +26,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
+    },    {
+      url: `${siteConfig.site_domain}/categories`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
   ];
 
@@ -35,5 +41,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  return [...staticUrls, ...postUrls];
+  const pageUrls: MetadataRoute.Sitemap = pages.map((page) => ({
+    url: `${siteConfig.site_domain}/pages/${page.slug}`,
+    lastModified: new Date(page.modified),
+    changeFrequency: "monthly",
+    priority: 0.4,
+  }));
+  const categoryUrls: MetadataRoute.Sitemap = categories.map((category) => ({
+    url: `${siteConfig.site_domain}/categories/${category.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.4,
+  }));
+
+  return [...staticUrls, ...postUrls, ...pageUrls, ...categoryUrls];
 }

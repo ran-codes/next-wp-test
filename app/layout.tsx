@@ -149,6 +149,18 @@ const Footer = () => {
             >
               Pages
             </Link>
+            <Link
+              className="hover:underline underline-offset-4"
+              href="/categories"
+            >
+              Categories
+            </Link>
+            <Link
+              className="hover:underline underline-offset-4"
+              href="/tags"
+            >
+              Tags
+            </Link>
           </div>
         </Container>
         <Container className="border-t not-prose flex flex-col md:flex-row md:gap-2 gap-6 justify-between md:items-center">

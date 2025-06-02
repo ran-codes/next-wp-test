@@ -28,6 +28,8 @@ const navigation = {
   home: "/",
   posts: "/posts",
   pages: "/pages",
+  categories: "/categories",
+  tags: "/tags",
 };
 
 export function MobileNav() {

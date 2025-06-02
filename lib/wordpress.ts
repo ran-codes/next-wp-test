@@ -6,7 +6,6 @@ import querystring from "query-string";
 import type {
   Post,
   Category,
-  Tag,
   Page,
   Author,
   FeaturedMedia,
@@ -69,6 +68,10 @@ export async function getPostBySlug(slug: string): Promise<Post> {
   const url = getUrl("/wp-json/wp/v2/posts", { slug, _embed: true });
   const response = await wordpressFetch<Post[]>(url);
   return response[0];
+}
+
+export async function getAllCategories(): Promise<Category[]> {
+  const url = getUrl("/wp-json/wp/v2/categories");  return wordpressFetch<Category[]>(url);
 }
 
 export async function getAllPages(): Promise<Page[]> {
