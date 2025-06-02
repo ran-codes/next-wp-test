@@ -1,8 +1,5 @@
 import {
   getPostBySlug,
-  getFeaturedMediaById,
-  getAuthorById,
-  getCategoryById,
   getAllPosts,
 } from "@/lib/wordpress";
 
@@ -11,7 +8,6 @@ import { badgeVariants } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/site.config";
 
-import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
 import type { Metadata } from "next";
@@ -75,16 +71,18 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  const featuredMedia = post.featured_media
-    ? await getFeaturedMediaById(post.featured_media)
-    : null;
-  const author = await getAuthorById(post.author);
+  
+  // Use embedded data instead of separate API calls
+  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0];
+  const author = post._embedded?.["author"]?.[0];
+  const categories = post._embedded?.["wp:term"]?.[0]; // Categories array
+  const category = categories?.[0]; // First category
+  
   const date = new Date(post.date).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
-  const category = await getCategoryById(post.categories[0]);
 
   return (
     <Section>
@@ -100,22 +98,23 @@ export default async function Page({
           <div className="flex justify-between items-center gap-4 text-sm mb-4">
             <h5>
               Published {date} by{" "}
-              {author.name && (
+              {author?.name && (
                 <span>
-                  <a href={`/posts/?author=${author.id}`}>{author.name}</a>{" "}
+                  <span>{author.name}</span>{" "}
                 </span>
               )}
             </h5>
 
-            <Link
-              href={`/posts/?category=${category.id}`}
-              className={cn(
-                badgeVariants({ variant: "outline" }),
-                "!no-underline"
-              )}
-            >
-              {category.name}
-            </Link>
+            {category && (
+              <span
+                className={cn(
+                  badgeVariants({ variant: "outline" }),
+                  "!no-underline"
+                )}
+              >
+                {category.name}
+              </span>
+            )}
           </div>
           {featuredMedia?.source_url && (
             <div className="h-96 my-12 md:h-[500px] overflow-hidden flex items-center justify-center border rounded-lg bg-accent/25">

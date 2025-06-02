@@ -4,25 +4,17 @@ import Link from "next/link";
 import { Post } from "@/lib/wordpress.d";
 import { cn } from "@/lib/utils";
 
-import {
-  getFeaturedMediaById,
-  getAuthorById,
-  getCategoryById,
-} from "@/lib/wordpress";
-
-export async function PostCard({ post }: { post: Post }) {
-  const media = post.featured_media
-    ? await getFeaturedMediaById(post.featured_media)
-    : null;
-  const author = post.author ? await getAuthorById(post.author) : null;
+export function PostCard({ post }: { post: Post }) {
   const date = new Date(post.date).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
-  const category = post.categories?.[0]
-    ? await getCategoryById(post.categories[0])
-    : null;
+
+  // Use embedded data from _embed parameter
+  const media = post._embedded?.["wp:featuredmedia"]?.[0];
+  const author = post._embedded?.["author"]?.[0];
+  const categories = post._embedded?.["wp:term"]?.[0]; // Categories
 
   return (
     <Link
@@ -68,7 +60,7 @@ export async function PostCard({ post }: { post: Post }) {
       <div className="flex flex-col gap-4">
         <hr />
         <div className="flex justify-between items-center text-xs">
-          <p>{category?.name || "Uncategorized"}</p>
+          <p>{categories?.[0]?.name || "Uncategorized"}</p>
           <p>{date}</p>
         </div>
       </div>

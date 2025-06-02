@@ -76,6 +76,12 @@ export interface Post extends WPEntity {
   categories: number[];
   tags: number[];
   meta: Record<string, unknown>;
+  // Embedded data when using _embed parameter
+  _embedded?: {
+    "wp:featuredmedia"?: FeaturedMedia[];
+    "author"?: Author[];
+    "wp:term"?: Category[][];
+  };
 }
 
 export interface Page extends WPEntity {
