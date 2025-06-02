@@ -6,9 +6,9 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "All Categories",
-  description: "Browse all categories of our blog posts",
+  description: "Browse all post categories",
   alternates: {
-    canonical: "/posts/categories",
+    canonical: "/categories",
   },
 };
 
@@ -21,10 +21,10 @@ export default async function Page() {
         <Prose className="mb-8">
           <h2>All Categories</h2>
           <ul className="grid">
-            {categories.map((category: any) => (
+            {categories.map((category) => (
               <li key={category.id}>
-                <Link href={`/posts/?category=${category.id}`}>
-                  {category.name}
+                <Link href={`/categories/${category.slug}`}>
+                  {category.name} ({category.count} posts)
                 </Link>
               </li>
             ))}

@@ -21,8 +21,16 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 
-import { mainMenu, contentMenu } from "@/menu.config";
 import { siteConfig } from "@/site.config";
+
+// Simple hardcoded navigation
+const navigation = {
+  home: "/",
+  posts: "/posts",
+  pages: "/pages",
+  categories: "/categories",
+  tags: "/tags",
+};
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
@@ -50,19 +58,11 @@ export function MobileNav() {
               <span>{siteConfig.site_name}</span>
             </MobileLink>
           </SheetTitle>
-        </SheetHeader>
-        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
+        </SheetHeader>        <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
           <div className="flex flex-col space-y-3">
-            <h3 className="text-small mt-6">Menu</h3>
+            <h3 className="text-small mt-6">Navigation</h3>
             <Separator />
-            {Object.entries(mainMenu).map(([key, href]) => (
-              <MobileLink key={key} href={href} onOpenChange={setOpen}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-              </MobileLink>
-            ))}
-            <h3 className="text-small pt-6">Blog Menu</h3>
-            <Separator />
-            {Object.entries(contentMenu).map(([key, href]) => (
+            {Object.entries(navigation).map(([key, href]) => (
               <MobileLink key={key} href={href} onOpenChange={setOpen}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </MobileLink>
